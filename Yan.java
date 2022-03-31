@@ -79,6 +79,7 @@ public class Yan {
             System.out.println("2 - посмотреть статистику;");
             System.out.println("3 - изменить цель по колличеству шагов в день, текущая цель: "+ StepTracker.target + " шагов в день;");
             System.out.println("0 - выход из программы;");
+		System.out.println("0 - выход из программы;");
             System.out.println("..........................");
         }
 
