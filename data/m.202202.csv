@@ -1,0 +1,4 @@
+﻿item_name, is_expense, quantity, sum_of_one
+Зажигалки, TRUE, 7000, 1
+Попкорн, TRUE, 5, 20000
+Продажа попкорна, FALSE, 2000, 90

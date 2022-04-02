@@ -1,81 +1,162 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Yan {
 
         public static void main(String[] args) {
-            System.out.println("РџСЂРѕРіСЂР°РјРјР° Р±СѓС…РіР°Р»С‚РµСЂРёСЏ");
-            System.out.println(readFileMonthdataOrNull("G:\\java+\\yan\\data\\m.202201.csv"));
+            System.out.println("Программа бухгалтерия");
+            MonthReport monthReport = new MonthReport();
+            YearReport yearReport = new YearReport();
+            String path = "G:\\java+\\yan\\data\\";
 
 
-            /*while (true) {
+
+
+
+
+            Scanner scanner =new Scanner(System.in);
+            printMenu();
+            while (true) {
                 try {
                     int number = scanner.nextInt();
                     if (number == 1) {
-                        System.out.println("Р’РІРѕРґ РєРѕР»Р»РёС‡РµСЃС‚РІР° С€Р°РіРѕРІ");
-                        System.out.println("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РјРµСЃСЏС†Р°");
-                        int monht = scanner.nextInt();
-                        System.out.println("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РґРЅСЏ");
-                        int day = scanner.nextInt();
-                        System.out.println("Р’РІРµРґРёС‚Рµ РєРѕР»Р»РёС‡РµСЃС‚РІРѕ С€Р°РіРѕРІ");
-                        int step = scanner.nextInt();
-                        stepTracker.stepTrackerSet(monht, day, step);
-
-
-
-                        System.out.println("РЎРѕС…СЂР°РЅРµРЅРѕ");
+                        System.out.println("Считываю месячные отчеты...");
+                        loadData (monthReport, path);
+                        System.out.println("Готово.");
                     } else if (number == 2) {
-                        System.out.println("РџСЂРѕСЃРјРѕС‚СЂ СЃС‚Р°С‚РёСЃС‚РёРєРё.");
-                        System.out.println("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РјРµСЃСЏС†Р° Р·Р° РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅР° СЃС‚Р°С‚РёСЃС‚РёРєР°:");
-                        int monht = scanner.nextInt();
-                        stepTracker.stepTrackerStatForMonth(monht);
+                        System.out.println("Считываю годовой отчет...");
+                        loadDataYear (yearReport, path);
+                        System.out.println("Готово.");
+
                     } else if (number == 3) {
-                        System.out.println("Р’РІРѕРґ С†РµР»Рё С€Р°РіРѕРІ РІ РґРµРЅСЊ");
-                        StepTracker.targetSet(scanner.nextInt());
+                        System.out.println("Сверяю очеты...");
+                        collation(monthReport, yearReport);
+                    } else if (number == 4) {
+                        System.out.println("Информация по месячным отчетам:");
+                        monthReport.infaByMonth();
+                    } else if (number == 5) {
+                        System.out.println("Информация по годовому отчету:");
+                        yearReport.infaByYear();
                     } else if (number == 0) {
-                        System.out.println("Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹");
+                        System.out.println("Выход из программы");
                         break;
                     } else {
-                        System.out.println("РўР°РєРѕР№ РєРѕРјР°РЅРґС‹ РЅРµС‚Сѓ");
+                        System.out.println("Такой команды нету");
                     }
 
                     printMenu();
 
                 } catch (Exception e) {
                     scanner.nextLine();
-                    System.out.println("Р’РІРµРґРµРЅР° РЅРµРєРѕСЂСЂРµРєС‚РЅР°СЏ РєРѕРјР°РЅРґР°.");
+                    System.out.println("Введена некорректная команда.");
 
                 }
 
-            }*/
+            }
 
         }
+            public static void printMenu () {
+                System.out.println("..........................");
+                System.out.println("Введите команду:");
+                System.out.println("1 - считать все месячные отчеты;");
+                System.out.println("2 - считать годовой отчет;");
+                System.out.println("3 - сверить отчеты;");
+                System.out.println("4 - вывести информацию о месячных отчетах;");
+                System.out.println("5 - вывести информацию о годовом отчете;");
+                System.out.println("0 - выход из программы;");
+                System.out.println("..........................");
+            }
 
-        public static void printMenu() {
-            System.out.println("..........................");
-            System.out.println("Р’РІРµРґРёС‚Рµ РєРѕРјР°РЅРґСѓ:");
-            System.out.println("1 - СЃС‡РёС‚Р°С‚СЊ РІСЃРµ РјРµСЃСЏС‡РЅС‹Рµ РѕС‚С‡РµС‚С‹;");
-            System.out.println("2 - СЃС‡РёС‚Р°С‚СЊ РіРѕРґРѕРІРѕР№ РѕС‚С‡РµС‚;");
-            System.out.println("3 - СЃРІРµСЂРёС‚СЊ РѕС‚С‡РµС‚С‹: С€Р°РіРѕРІ РІ РґРµРЅСЊ;");
-            System.out.println("4 - РІС‹РІРµСЃС‚Рё РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РјРµСЃСЏС‡РЅС‹С… РѕС‚С‡РµС‚Р°С…;");
-            System.out.println("5 - РІС‹РІРµСЃС‚Рё РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РіРѕРґРѕРІРѕРј РѕС‚С‡РµС‚Рµ;");
-            System.out.println("0 - РІС‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹;");
-            System.out.println("..........................");
-        }
-
-        private static String readFileMonthdataOrNull (String path) {
+        private static String readFileDataOrNull (String path) {
             try {
-                Path filePath= Path.of(path);
-
-                return Files.readString(filePath);
+                return Files.readString(Path.of(path));
             } catch (IOException e) {
-                System.out.println("РќРµ РІРѕР·РјРѕР¶РЅРѕ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р» СЃ РјРµСЃСЏС‡РЅС‹Рј РѕС‚С‡РµС‚РѕРј.");
+                System.out.println("Не возможно прочитать файл с отчетом.");
                return null;
             }
         }
 
+        private static ArrayList<MonthData> parseFileContentMonth (String content) {
+            String[]  strings = content.split("\\r\\n");
+            ArrayList<MonthData> monthData = new ArrayList<>();
+            for (int i=1; i<=3; i++) {
+                String[] line = strings[i].split(", ");
+                 monthData.add(new MonthData(line[0],
+                                            Boolean.parseBoolean(line[1]),
+                                            Float.parseFloat(line[2]),
+                                            Integer.parseInt(line[3])));
 
+            }
+            return monthData;
+        }
+
+        private static void loadData (MonthReport monthReport, String str) {
+
+            String pach;
+            for (int i = 1; i <=3 ; i++) {
+                pach = str + "m.20220" + i + ".csv";
+                monthReport.addMonth (i, parseFileContentMonth(readFileDataOrNull(pach)));
+            }
+            MonthReport.is_load_month = true;
+        }
+
+    private static ArrayList<YearData> parseFileContentYear (String content) {
+        String[]  strings = content.split("\\r\\n");
+        ArrayList<YearData> yearData = new ArrayList<>();
+        for (int i=1; i<strings.length; i=i+2) {
+            String[] line1 = strings[i].split(", ");
+            String[] line2 = strings[i+1].split(", ");
+            float profit = -1;
+            float waste = -1;
+            if (Boolean.parseBoolean(line1[2]))
+                waste = Float.parseFloat(line1[1]);
+            else profit = Float.parseFloat(line1[1]);
+            if (Boolean.parseBoolean(line2[2]))
+                waste = Float.parseFloat(line2[1]);
+            else profit = Float.parseFloat(line2[1]);
+            yearData.add(new YearData(
+                    Integer.parseInt(line1[0]),
+                    waste,
+                    profit));
+
+        }
+        return yearData;
     }
+    private static void loadDataYear (YearReport yearReport, String str) {
+
+        String pach = str + "y.2022.csv";
+        yearReport.dataYear =  parseFileContentYear(readFileDataOrNull(pach));
+        YearReport.is_load_year = true;
+    }
+
+    public static void collation(MonthReport monthReport, YearReport yearReport) {
+            if (!YearReport.is_load_year || !MonthReport.is_load_month) {
+                System.out.println("Сначало считайте отчеты");
+                return;
+            }
+
+
+        for (int i = 0; i<yearReport.dataYear.size() ; i++) {
+            if (yearReport.dataYear.get(i).amountProfit!=monthReport.monthProfit(i+1)) {
+                System.out.println("Ошибка в сверке отчетов. Ошибка в месяце "+yearReport.dataYear.get(i).numberMonth);
+                return;
+            }
+            if (yearReport.dataYear.get(i).amountWaste!=monthReport.monthWaste(i+1)) {
+                System.out.println("Ошибка в сверке отчетов. Ошибка в месяце "+yearReport.dataYear.get(i).numberMonth);
+                return;
+            }
+
+
+
+
+
+        }
+        System.out.println("Ошибок не обнаружено");
+    }
+
+
+}
 

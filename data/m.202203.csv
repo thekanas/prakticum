@@ -1,0 +1,4 @@
+﻿item_name, is_expense, quantity, sum_of_one
+Печка, TRUE, 18000, 2
+Вафельница, TRUE, 3, 4000
+Продажа вафель, FALSE, 8000, 50
